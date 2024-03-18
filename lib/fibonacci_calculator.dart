@@ -34,7 +34,7 @@ class _FibonacciCalculatorState extends State<FibonacciCalculator> {
               onPressed: () {
                 setState(() {
                   int position = int.tryParse(_inputController.text) ?? 0;
-                  _result = fibonacci(position);
+                  _result = fibonacci(position - 1);
                 });
               },
               child: const Text('Calculate'),
@@ -50,10 +50,32 @@ class _FibonacciCalculatorState extends State<FibonacciCalculator> {
     );
   }
 
+  Map<int, int> cache = {};
+
   int fibonacci(int n) {
-    if (n <= 1) {
-      return n;
+    if (n <= 0) {
+      return 0;
+    } else if (n == 1 || n == 2) {
+      return 1;
+    } else {
+      if (cache.containsKey(n)) {
+        return cache[n]!;
+      } else {
+        cache[n] = (fibonacci(n - 1) + fibonacci(n - 2));
+        return cache[n]!;
+      }
     }
-    return fibonacci(n - 1) + fibonacci(n - 2);
   }
 }
+//0+0=0
+//0+1=1
+//1+0=1
+//1+1=2
+//1+2=3
+//2+3=5
+//3+5=8
+//5+8=13
+//8+13=21
+//13+21=34
+//21+34=55
+//34+55=89
